@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
 import { Button, Table } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-// import Employee from './Employee';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
 const Home = () => {
@@ -33,15 +32,16 @@ const Home = () => {
         history('/update',{state:{id:id, name:name, location:location}});
     }
 
-    const handleDelete = (ID) => {
-        var index = Employee.map(function (e) {
-            return e.ID
-        }).indexOf(ID);
-
-        Employee.splice(index, 1);
-        history('/');
-
-
+    const handleDelete = (id) => {
+        const requestOptions = {
+            method: 'DELETE'
+        };
+        const url = "http://localhost:4000/company/" + id
+        fetch(url, requestOptions)
+            .then(console.log)
+        
+        alert("Deleted!")
+        history("/")
     }
     return (
         <Fragment>
@@ -79,7 +79,9 @@ const Home = () => {
                                             <td>
                                                 <Button onClick={() => handleEdit(item.id, item.name, item.location)}>Edit</Button>
                                                 &nbsp;
+                                                <a href="/">
                                                 <Button onClick={() => handleDelete(item.id)}>Delete</Button>
+                                                </a>
                                             </td>
                                         </tr>
                                     )
